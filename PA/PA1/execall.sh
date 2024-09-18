@@ -48,6 +48,7 @@ if [[ "$mode" == "S" ]]; then
         ./bin/NTU_sort -$sorter ./inputs/32000.case3.in ./outputs/32000.case3.out >> ./result/$sorter.result
         echo "----------" >> ./result/$sorter.result
         echo "Now running $sorter: n = 1000000..."
+        ulimit -s 262144
         echo "Sorter: $sorter, n = 1000000" >> ./result/$sorter.result
         echo "----------" >> ./result/$sorter.result
         printf "Running case 1...\n"

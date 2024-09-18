@@ -1,36 +1,36 @@
 Sorter: RQS, n = 4000
 ----------
-The total CPU time: 9.383ms
-memory: 6072KB
-The total CPU time: 9.448ms
-memory: 6072KB
-The total CPU time: 11.629ms
-memory: 6072KB
+The total CPU time: 12.984ms
+memory: 5904KB
+The total CPU time: 14.528ms
+memory: 5904KB
+The total CPU time: 13.322ms
+memory: 5904KB
 ----------
 Sorter: RQS, n = 16000
 ----------
-The total CPU time: 46.43ms
-memory: 6224KB
-The total CPU time: 46.102ms
-memory: 6224KB
-The total CPU time: 45.397ms
-memory: 6224KB
+The total CPU time: 30.877ms
+memory: 6056KB
+The total CPU time: 36.702ms
+memory: 6056KB
+The total CPU time: 32.491ms
+memory: 6056KB
 ----------
 Sorter: RQS, n = 32000
 ----------
-The total CPU time: 93.547ms
-memory: 6356KB
-The total CPU time: 83.575ms
-memory: 6356KB
-The total CPU time: 86.3ms
-memory: 6356KB
+The total CPU time: 60.278ms
+memory: 6188KB
+The total CPU time: 67.334ms
+memory: 6188KB
+The total CPU time: 60.863ms
+memory: 6188KB
 ----------
 Sorter: RQS, n = 1000000
 ----------
-The total CPU time: 2508.57ms
-memory: 12312KB
-The total CPU time: 2492.62ms
-memory: 12312KB
-The total CPU time: 2500.18ms
-memory: 12312KB
+The total CPU time: 1889.25ms
+memory: 12144KB
+The total CPU time: 1944.95ms
+memory: 12144KB
+The total CPU time: 1829.55ms
+memory: 12144KB
 ----------
