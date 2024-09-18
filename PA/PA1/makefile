@@ -40,5 +40,5 @@ tm_usage.o: lib/tm_usage.cpp lib/tm_usage.h
 
 # clean all the .o and executable files
 clean:
-		rm -rf *.o lib/*.a lib/*.o bin/*
+		rm -rf *.o lib/*.a lib/*.o bin/* outputs/*.out
 

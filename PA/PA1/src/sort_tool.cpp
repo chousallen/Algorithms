@@ -9,6 +9,14 @@
 
 #include "sort_tool.h"
 #include<iostream>
+
+void swap(int &a, int &b)
+{
+    int temp = a;
+    a = b;
+    b = temp;
+}
+
 // Constructor
 SortTool::SortTool() {}
 
@@ -16,14 +24,33 @@ SortTool::SortTool() {}
 void SortTool::InsertionSort(vector<int>& data) {
     // Function : Insertion sort
     // TODO : Please complete insertion sort code here
-    for(int curr = 1; curr < data.size(); curr++)
-    {}
+    for(int curr_idx = 1; curr_idx < data.size(); curr_idx++)
+    {
+        int key = data[curr_idx];
+        for(int i = curr_idx - 1; i >= 0; i--)
+        {
+            if(data[i] > key)
+            {
+                data[i + 1] = data[i];
+                if(i == 0)
+                {
+                    data[i] = key;
+                }
+            }
+            else
+            {
+                data[i + 1] = key;
+                break;
+            }
+        }
+    }
 }
 
 // Quick sort method
 void SortTool::QuickSort(vector<int>& data,int f){
     QuickSortSubVector(data, 0, data.size() - 1, f);
 }
+
 // Sort subvector (Quick sort)
 void SortTool::QuickSortSubVector(vector<int>& data, int low, int high, const int flag) {
     // Function : Quick sort subvector
@@ -32,14 +59,45 @@ void SortTool::QuickSortSubVector(vector<int>& data, int low, int high, const in
     //        Partition function is needed
     // flag == 0 -> normal QS
     // flag == 1 -> randomized QS
+    srand(time(NULL));
+    if(low < high)
+    {
+        int pivot;
+        if(flag == 0)
+        {
+            pivot = Partition(data, low, high);
+        }
+        else
+        {
+            pivot = RandomizedPartition(data, low, high);
+        }
+        QuickSortSubVector(data, low, pivot - 1, flag);
+        QuickSortSubVector(data, pivot + 1, high, flag);
+    }
 }
+
 int SortTool::RandomizedPartition(vector<int>& data, int low, int high){
     // Function : RQS's Partition the vector 
     // TODO : Please complete the function
+    int random = low + rand() % (high - low + 1);
+    swap(data[random], data[high]);
+    return Partition(data, low, high);
 }
+
 int SortTool::Partition(vector<int>& data, int low, int high) {
     // Function : Partition the vector 
     // TODO : Please complete the function
+    int pivot = data[high];
+    int left = low - 1;
+    for(int curr = low; curr < high; curr++)
+    {
+        if(data[curr] < pivot)
+        {
+            swap(data[++left], data[curr]);
+        }
+    }
+    swap(data[++left], data[high]);
+    return left;
 }
 
 // Merge sort method

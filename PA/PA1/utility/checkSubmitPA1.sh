@@ -94,7 +94,7 @@ make clean
 make
 
 if [ ! -f bin/$binaryFileName ]; then
-    echo "Connot find bin/$binaryFileName"
+    echo "Cannot find bin/$binaryFileName"
     cd ../../
     rm -rf check_$$
     exit
