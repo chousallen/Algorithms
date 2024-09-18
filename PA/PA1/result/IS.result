@@ -27,3 +27,10 @@ memory: 6188KB
 ----------
 Sorter: IS, n = 1000000
 ----------
+The total CPU time: 319333ms
+memory: 12144KB
+The total CPU time: 2.271ms
+memory: 12144KB
+The total CPU time: 633200ms
+memory: 12144KB
+----------
