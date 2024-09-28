@@ -34,3 +34,8 @@ memory: 49464KB
 The total CPU time: 356502ms
 memory: 34176KB
 ----------
+Sorter: QS, n = 1000000
+----------
+The total CPU time: 1696.01ms
+memory: 21474910564KB
+----------
