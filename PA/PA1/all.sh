@@ -1,4 +1,6 @@
 #!/bin/bash
+make
+
 ./execall.sh S IS ALL
 ./execall.sh C ALL
 
