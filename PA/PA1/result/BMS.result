@@ -1,0 +1,36 @@
+Sorter: BMS, n = 4000
+----------
+The total CPU time: 0.864ms
+memory: 21474903360KB
+The total CPU time: 0.771ms
+memory: 21474903360KB
+The total CPU time: 0.644ms
+memory: 21474903360KB
+----------
+Sorter: BMS, n = 16000
+----------
+The total CPU time: 3.343ms
+memory: 21474903360KB
+The total CPU time: 2.561ms
+memory: 21474903360KB
+The total CPU time: 3.393ms
+memory: 21474903360KB
+----------
+Sorter: BMS, n = 32000
+----------
+The total CPU time: 6.79ms
+memory: 21474903360KB
+The total CPU time: 5.646ms
+memory: 21474903360KB
+The total CPU time: 5.063ms
+memory: 21474903360KB
+----------
+Sorter: BMS, n = 1000000
+----------
+The total CPU time: 266.02ms
+memory: 21474934360KB
+The total CPU time: 172.767ms
+memory: 21474934360KB
+The total CPU time: 167.412ms
+memory: 21474934360KB
+----------
