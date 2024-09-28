@@ -1,36 +1,36 @@
 Sorter: IS, n = 4000
 ----------
-The total CPU time: 11.541ms
+The total CPU time: 9.744ms
 memory: 5904KB
-The total CPU time: 0.127ms
+The total CPU time: 0.133ms
 memory: 5904KB
-The total CPU time: 16.853ms
+The total CPU time: 16.465ms
 memory: 5904KB
 ----------
 Sorter: IS, n = 16000
 ----------
-The total CPU time: 85.393ms
+The total CPU time: 82.893ms
 memory: 6056KB
-The total CPU time: 0.122ms
+The total CPU time: 0.125ms
 memory: 6056KB
-The total CPU time: 166.356ms
+The total CPU time: 165.15ms
 memory: 6056KB
 ----------
 Sorter: IS, n = 32000
 ----------
-The total CPU time: 329.746ms
+The total CPU time: 323.594ms
 memory: 6188KB
-The total CPU time: 0.123ms
+The total CPU time: 0.168ms
 memory: 6188KB
-The total CPU time: 648.539ms
+The total CPU time: 644.881ms
 memory: 6188KB
 ----------
 Sorter: IS, n = 1000000
 ----------
-The total CPU time: 319333ms
+The total CPU time: 313815ms
 memory: 12144KB
-The total CPU time: 2.271ms
+The total CPU time: 2.256ms
 memory: 12144KB
-The total CPU time: 633200ms
+The total CPU time: 627227ms
 memory: 12144KB
 ----------

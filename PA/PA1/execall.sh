@@ -12,14 +12,14 @@ if [[ "$1" == "" ]]; then
     fi
 elif [[ "$1" == "S" ]]; then
     mode=$1
-    size=$2
-    sorter=$3
+    sorter=$2
+    size=$3
 elif [[ "$1" == "C" ]]; then
     mode=$1
     size=$2
 else
     echo "Lazy code runner:"
-    echo "type './execall.sh [S/C] [5/1000/4000/16000/32000/1000000/ALL] [IS/QS/RQS/MS/BMS/HS]'"
+    echo "type './execall.sh [S/C] [IS/QS/RQS/MS/BMS/HS] [5/1000/4000/16000/32000/1000000/ALL]'"
     echo "or './execall.sh' to use"
 fi
 
