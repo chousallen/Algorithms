@@ -1,5 +1,5 @@
 *:Zone.Identifier
-**/bin/
+**/bin/*
 *.o
 *.out
 *.result
