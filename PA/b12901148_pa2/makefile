@@ -18,11 +18,11 @@ dbg: all
 all: mps
 
 mps: bin/main.o
-	$(CC) $(CFLAGS) -o bin/mps main.o
+	$(CC) $(CFLAGS) -o bin/mps bin/main.o
 
 # Rules for object files
 bin/main.o: src/main.cpp
-	$(CC) $(CFLAGS) -c src/main.cpp -o main.o
+	$(CC) $(CFLAGS) -c src/main.cpp -o bin/main.o
 
 # Clean up build files
 clean:
