@@ -1,9 +1,9 @@
 # Variables
 CC = g++
-CFLAGS = -Wall
+CFLAGS = 
 
 # Flags for Debug and Optimization modes
-DEBUG_FLAGS = -g -O0
+DEBUG_FLAGS = -g -O0 -Wall
 OPTIM_FLAGS = -O2
 
 # Target to compile in Optimization mode
@@ -11,8 +11,8 @@ opt: CFLAGS += $(OPTIM_FLAGS)
 opt: all
 
 # Target to compile in Debug mode
-debug: CFLAGS += $(DEBUG_FLAGS)
-debug: all
+dbg: CFLAGS += $(DEBUG_FLAGS)
+dbg: all
 
 # Rule for compiling the program
 all: mps
