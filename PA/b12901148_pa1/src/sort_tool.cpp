@@ -25,7 +25,8 @@ SortTool::SortTool() {}
 void SortTool::InsertionSort(vector<int>& data) {
     // Function : Insertion sort
     // TODO : Please complete insertion sort code here
-    for(int curr_idx = 1; curr_idx < data.size(); curr_idx++)
+    int n = data.size();
+    for(int curr_idx = 1; curr_idx < n; curr_idx++)
     {
         int key = data[curr_idx];
         for(int i = curr_idx - 1; i >= 0; i--)
@@ -33,10 +34,6 @@ void SortTool::InsertionSort(vector<int>& data) {
             if(data[i] > key)
             {
                 data[i + 1] = data[i];
-                if(i == 0)
-                {
-                    data[i] = key;
-                }
             }
             else
             {
@@ -44,6 +41,8 @@ void SortTool::InsertionSort(vector<int>& data) {
                 break;
             }
         }
+        if(data[0] > key)
+            data[0] = key;
     }
 }
 
