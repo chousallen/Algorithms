@@ -34,12 +34,23 @@ int main(int argc, char* argv[])
 
     vector<vector<map_ele>> mps_table = construct_mps_table(chords, n);
     printf("MPS table constructed\n");
+    int max = 0;
+    for(int i=0; i<n*2-1; i++)
+    {
+        for(int j=i; j<n*2; j++)
+        {
+            if(mps_table[i][j].size > max)
+                max = mps_table[i][j].size;
+        }
+    }
+    printf("2n: %d\n", n*2);
+    printf("Max: %d\n", max);
     vector<int> mps;
     get_mps(mps_table, 0, n*2-1, chords, mps);
     printf("MPS found\n");
 
     op_file << mps_table[0][n*2-1].size << endl;
-    for(int i=0; i<mps.size(); i++)
+    for(int i=0; i<int(mps.size()); i++)
     {
         op_file << mps[i] << " " << chords[mps[i]] << endl;
     }

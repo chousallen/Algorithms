@@ -26,7 +26,7 @@ vector<vector<map_ele>> construct_mps_table(vector<int> &chords, int n)
                 mps_table[i][i+l].size = mps_table[i+1][i+l-1].size + 1;
                 mps_table[i][i+l].chord_start = i;
             }
-            else if(i+l > j > i) // inner case
+            else if(i+l > j && j > i) // inner case
             {
                 // a: discard the chord, b: include the chord
                 map_ele a = mps_table[i][i+l-1], b = {1+mps_table[i][j-1].size+mps_table[j+1][i+l-1].size, j};
