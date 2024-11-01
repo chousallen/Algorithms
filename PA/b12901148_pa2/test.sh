@@ -6,7 +6,7 @@ make opt
 
 # Test cases
 #case=($(ls ./inputs | sed 's/\.in$//'))
-case=(12 1000 10000 60000 100000 my)
+case=(P180000)
 len=${#case[@]}
 
 # Execute the project (assuming the output binary is named 'project')
