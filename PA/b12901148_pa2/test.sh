@@ -12,6 +12,6 @@ len=${#case[@]}
 # Execute the project (assuming the output binary is named 'project')
 for ((i=0; i<$len; i++)); do
     echo "Running test case ${case[i]}"
-    ./bin/mps ./inputs/${case[i]}.in ./outputs/${case[i]}.out
+    time ./bin/mps ./inputs/${case[i]}.in ./outputs/${case[i]}.out
     #diff ./outputs/${case[i]}.out ./expected/${case[i]}.out
 done
