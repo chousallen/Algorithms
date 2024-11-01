@@ -4,69 +4,113 @@
 struct map_ele
 {
     int size;
-    int chord_start;
+    //int chord_start;
 };
 
-vector<vector<map_ele>> construct_mps_table(vector<int> &chords, int n);
-void get_mps(vector<vector<map_ele>> &mps_table, int i, int j, vector<int> &chords, vector<int> &mps);
+int** init_mps_table(int n);
+int** fill_mps_table(int* chords, int n);
+void print_mps_table(int** mps_table, int n);
+int* get_mps(int** mps_table, int n);
+void delete_mps_table(int** mps_table, int n);
+int Max(int a, int b);
 
-vector<vector<map_ele>> construct_mps_table(vector<int> &chords, int n)
+int** init_mps_table(int n)
 {
-    vector<vector<map_ele>> mps_table(n*2-1, vector<map_ele>(n*2, {0, -1}));
+    int size = (2*n+1) * n;
+    int* tmp_ptr = new int[size];
     
-    int l_max = n*2-1;
-    for(int l=1; l<=l_max; l++)
+    int** mps_table = new int*[n*2];
+    for(int i=0, addr=0, d=n*2-1; i<n*2; i++)
     {
-        int i_max = n*2-1-l;
+        mps_table[i] = tmp_ptr + addr;
+        addr += d;
+        d-=1;
+    }
+    return mps_table;
+}
+
+int** fill_mps_table(int* chords, int n)
+{
+    int** mps_table = init_mps_table(n);
+
+    //base case
+    for(int i=0; i<2*n; i++)
+    {
+        mps_table[i][i] = 0;
+    }
+    
+    for(int l=1; l<=2*n-1; l++)
+    {
+        int i_max = 2*n-1-l;
         for(int i=0; i<=i_max; i++)
         {
             int j = chords[i+l];
-            if(i == j)
+            if(j == i)
             {
-                mps_table[i][i+l].size = mps_table[i+1][i+l-1].size + 1;
-                mps_table[i][i+l].chord_start = i;
+                mps_table[i][i+l] = mps_table[i+1][i+l-1] + 1;
             }
-            else if(i+l > j && j > i) // inner case
+            else if(i+l>j && j>i)
             {
-                // a: discard the chord, b: include the chord
-                map_ele a = mps_table[i][i+l-1], b = {1+mps_table[i][j-1].size+mps_table[j+1][i+l-1].size, j};
-                if(a.size > b.size)
-                    mps_table[i][i+l] = a;
-                else
-                    mps_table[i][i+l] = b;
+                mps_table[i][i+l] = Max(1 + mps_table[i][j-1] + mps_table[j+1][i+l-1], mps_table[i][i+l-1]);
             }
             else
             {
                 mps_table[i][i+l] = mps_table[i][i+l-1];
             }
+            printf("mps_table[%d][%d]: %d\n", i, i+l, mps_table[i][i+l]);
         }
+        printf("\n");
     }
-
+    printf("\n");
     return mps_table;
 }
 
-void get_mps(vector<vector<map_ele>> &mps_table, int i, int j, vector<int> &chords, vector<int> &mps)
+void print_mps_table(int** mps_table, int n)
 {
-    
-    //printf("i: %d, j: %d\n", i, j);
-    int next_start = mps_table[i][j].chord_start;
-    //printf("next_start: %d\n", next_start);
-    int end = chords[next_start];
-    //printf("end: %d\n", end);
-    if(next_start == -1)
-        return;
-    if(next_start == i)
+    for(int i=0; i<n*2-1; i++)
     {
-        mps.push_back(i);
-        get_mps(mps_table, i+1, j-1, chords, mps);
-    }
-    else
-    {
-        get_mps(mps_table, i, next_start-1, chords, mps);
-        mps.push_back(next_start);
-        get_mps(mps_table, next_start+1, end, chords, mps);
+        printf("mps_table[%d]: ", i);
+        for(int j=i+1; j<n*2; j++)
+        {
+            printf("%d ", mps_table[i][j]);
+        }
+        printf("\n");
     }
 }
 
+int* get_mps(int** mps_table, int n)
+{
+    int* mps = new int[mps_table[0][n*2-1]];
+    int i = 0, j = n*2-1, k = 0;
+    while(i < j)
+    {
+        if(mps_table[i][j] == mps_table[i+1][j])
+        {
+            i++;
+        }
+        else if(mps_table[i][j] == mps_table[i][j-1])
+        {
+            j--;
+        }
+        else
+        {
+            mps[k++] = i;
+            i++;
+            j--;
+        }
+    }
+    return mps;
+}
+
+void delete_mps_table(int** mps_table, int n)
+{
+    delete[] (mps_table[0]);
+    delete[] mps_table;
+}
+
+int Max(int a, int b)
+{
+    return a > b ? a : b;
+}
 
 #endif // _MPS_H_

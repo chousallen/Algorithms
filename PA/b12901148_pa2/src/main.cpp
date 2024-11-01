@@ -29,9 +29,18 @@ int main(int argc, char* argv[])
     int n = 0;
     ip_file >> n; //the first line is 2n
     n /= 2;
-    vector<int> chords = get_chords(ip_file, n);
+    int* chords = get_chords(ip_file, n);
     ip_file.close();
+    int **mps_table = fill_mps_table(chords, n);
+    print_mps_table(mps_table, n);
+    int mpssize = mps_table[0][n*2-1];
+    op_file << mpssize << endl;
+    for(int i=0; i<mpssize; i++)
+    {
+        op_file << 0 << " " << 0 << endl;
+    }
 
+    /*
     vector<vector<map_ele>> mps_table = construct_mps_table(chords, n);
     printf("MPS table constructed\n");
     int max = 0;
@@ -53,9 +62,9 @@ int main(int argc, char* argv[])
     for(int i=0; i<int(mps.size()); i++)
     {
         op_file << mps[i] << " " << chords[mps[i]] << endl;
-    }
-
-
+    }*/
+    delete_mps_table(mps_table, n);
+    delete[] chords;
     op_file.close();
 
     return EXIT_SUCCESS;

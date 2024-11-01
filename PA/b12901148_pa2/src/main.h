@@ -7,12 +7,12 @@
 
 using namespace std;
 
-vector<int> get_chords(fstream &ip_file, int n);
+int* get_chords(fstream &ip_file, int n);
 
-vector<int> get_chords(fstream &ip_file, int n)
+int* get_chords(fstream &ip_file, int n)
 {
-    vector<int> chords(n*2);
-    for(int i=0; i<n; i++)
+    int* chords = new int[n*2];
+    for(int i = 0; i < n; i++)
     {
         int start, end;
         ip_file >> start >> end;

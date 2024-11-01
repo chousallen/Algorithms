@@ -2,11 +2,11 @@
 
 # Build the project (assuming a Makefile is present)
 make clean
-make opt
+make dbg
 
 # Test cases
 #case=($(ls ./inputs | sed 's/\.in$//'))
-case=(P180000)
+case=(12)
 len=${#case[@]}
 
 # Execute the project (assuming the output binary is named 'project')

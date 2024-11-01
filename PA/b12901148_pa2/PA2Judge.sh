@@ -69,8 +69,8 @@ if [ "$1" == "" ]; then
         fi
     done
 
-    rm -rf ./testout/
-    rm -f ./inputs/P*.in
+    #rm -rf ./testout/
+    #rm -f ./inputs/P*.in
     exit 0
 fi
 
