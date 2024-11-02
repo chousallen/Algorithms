@@ -8,27 +8,13 @@ struct ele
 
 int main()
 {
-    ele *p = new ele[5*3];
-    ele **arr = new ele*[3];
-    for(int i=0; i<3; i++)
+    long n = 50000, sum = 0, size = (2*n+1) * n;
+    for(int k = 2*n; k>=2*n-24469; k--)
     {
-        arr[i] = p + i*5;
+        sum += k;
     }
-
-    printf("p: %p\n", p);
-
-    for(int i=0; i<15; i++)
-    {
-        p[i].val = i;
-    }
-
-    printf("arr[0]: %p\n", arr[0]);
-    printf("p: %p\n", p);
-    printf("p[0].val: %p\n", &p[0].val);
-    printf("arr[0][0].val: %p\n", &arr[0][0].val);
-
-    delete[] arr[0];
-    delete[] arr;
+    printf("sum: %ld\n", sum);
+    printf("size: %ld\n", size);
 
     return EXIT_SUCCESS;
 }

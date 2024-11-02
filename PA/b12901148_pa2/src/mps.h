@@ -16,11 +16,11 @@ int Max(int a, int b);
 
 int** init_mps_table(int n)
 {
-    int size = (2*n+1) * n;
+    unsigned long size = (2*long(n)+1) * long(n);
     int* tmp_ptr = new int[size];
     
     int** mps_table = new int*[n*2];
-    for(int i=0, addr=0, d=n*2-1; i<n*2; i++)
+    for(unsigned long i=0, addr=0, d=n*2-1; i<(unsigned long)(n)*2; i++)
     {
         mps_table[i] = tmp_ptr + addr;
         addr += d;
@@ -45,7 +45,7 @@ int** fill_mps_table(int* chords, int n)
         for(int i=0; i<=i_max; i++)
         {
             int j = chords[i+l];
-            if(j == i)
+            if(j == i)                                                                                                                 cccccccccccccccc  c nnnnnn   n nnnn
             {
                 mps_table[i][i+l] = mps_table[i+1][i+l-1] + 1;
             }
@@ -57,11 +57,8 @@ int** fill_mps_table(int* chords, int n)
             {
                 mps_table[i][i+l] = mps_table[i][i+l-1];
             }
-            printf("mps_table[%d][%d]: %d\n", i, i+l, mps_table[i][i+l]);
         }
-        printf("\n");
     }
-    printf("\n");
     return mps_table;
 }
 

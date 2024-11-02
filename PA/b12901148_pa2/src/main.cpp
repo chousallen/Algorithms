@@ -32,7 +32,7 @@ int main(int argc, char* argv[])
     int* chords = get_chords(ip_file, n);
     ip_file.close();
     int **mps_table = fill_mps_table(chords, n);
-    print_mps_table(mps_table, n);
+    //print_mps_table(mps_table, n);
     int mpssize = mps_table[0][n*2-1];
     op_file << mpssize << endl;
     for(int i=0; i<mpssize; i++)
