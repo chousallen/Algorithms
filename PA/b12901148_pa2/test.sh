@@ -6,7 +6,7 @@ make dbg
 
 # Test cases
 #case=($(ls ./inputs | sed 's/\.in$//'))
-case=(12)
+case=(nb)
 len=${#case[@]}
 
 # Execute the project (assuming the output binary is named 'project')

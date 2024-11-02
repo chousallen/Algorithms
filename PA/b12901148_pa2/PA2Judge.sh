@@ -85,8 +85,8 @@ if [ "$1" == "" ]; then
         fi
     done
 
-    rm -rf ./testout/
-    rm -f ./inputs/P*.in
+    #rm -rf ./testout/
+    #rm -f ./inputs/P*.in
     exit 0
 fi
 
@@ -108,7 +108,8 @@ else
     echo -e "${RED}PA2Judge: ${Tese_case_names[$1]}: Wrong Answer.${RESET}"
 fi
 
-rm -rf ./testout/
+#rm -rf ./testout/
 if [ $1 -ge 5 ]; then
-    rm -f ./inputs/P*.in
+    #rm -f ./inputs/P*.in
+    echo haha
 fi
