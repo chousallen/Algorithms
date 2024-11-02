@@ -82,14 +82,14 @@ void print_mps_table(int** mps_table, int n)
 
 int* get_mps(int** mps_table, int n, int* chords, int i, int j)
 {
-    printf("get_mps(%d, %d)\n", i, j);
+    //printf("get_mps(%d, %d)\n", i, j);
     static int size = mps_table[0][n*2-1], curr = 0;
     static int *mps = new int [size];
     if(i>=j)
         return mps;
     if(chords[i] == j)
     {
-        printf("case1\n");
+        //printf("case1\n");
         mps[curr++] = i;
         get_mps(mps_table, n, chords, i+1, j-1);
     }
@@ -100,20 +100,20 @@ int* get_mps(int** mps_table, int n, int* chords, int i, int j)
         {
             if(1+mps_table[i][k-1]+mps_table[k+1][j-1] > mps_table[i][j-1])
             {
-                printf("case2-1\n");
+                //printf("case2-1\n");
                 get_mps(mps_table, n, chords, i, k-1);
                 mps[curr++] = k;
                 get_mps(mps_table, n, chords, k+1, j);
             }
             else
             {
-                printf("case2-2\n");
+                //printf("case2-2\n");
                 get_mps(mps_table, n, chords, i, j-1);
             }
         }
         else
         {
-            printf("case3\n");
+            //printf("case3\n");
             get_mps(mps_table, n, chords, i, j-1);
         }
     }

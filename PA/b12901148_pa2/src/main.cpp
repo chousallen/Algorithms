@@ -36,7 +36,7 @@ int main(int argc, char* argv[])
     op_file << mps_size << endl;
     //print_mps_table(mps_table, n);
     int* mps = get_mps(mps_table, n, chords, 0, 2*n-1);
-    printf("mps get\n");
+    //printf("mps get\n");
     for(int i=0; i<mps_size; i++)
     {
         op_file << mps[i] << " " << chords[mps[i]] << endl;
