@@ -32,37 +32,14 @@ int main(int argc, char* argv[])
     int* chords = get_chords(ip_file, n);
     ip_file.close();
     int** mps_table = init_mps_table(n);
-    //print_mps_table(mps_table, n);
-    int mpssize = mps_table[0][n*2-1];
-    op_file << mpssize << endl;
-    for(int i=0; i<mpssize; i++)
+    int mps = mps_len(chords, n, mps_table, 0, 2*n-1);
+    op_file << mps << endl;
+    for(int i=0; i<mps; i++)
     {
         op_file << 0 << " " << 0 << endl;
     }
+    //print_mps_table(mps_table, n);
 
-    /*
-    vector<vector<map_ele>> mps_table = construct_mps_table(chords, n);
-    printf("MPS table constructed\n");
-    int max = 0;
-    for(int i=0; i<n*2-1; i++)
-    {
-        for(int j=i; j<n*2; j++)
-        {
-            if(mps_table[i][j].size > max)
-                max = mps_table[i][j].size;
-        }
-    }
-    printf("2n: %d\n", n*2);
-    printf("Max: %d\n", max);
-    vector<int> mps;
-    get_mps(mps_table, 0, n*2-1, chords, mps);
-    printf("MPS found\n");
-
-    op_file << mps_table[0][n*2-1].size << endl;
-    for(int i=0; i<int(mps.size()); i++)
-    {
-        op_file << mps[i] << " " << chords[mps[i]] << endl;
-    }*/
     delete_mps_table(mps_table, n);
     delete[] chords;
     op_file.close();

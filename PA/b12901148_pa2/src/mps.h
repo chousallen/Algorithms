@@ -39,38 +39,37 @@ int** init_mps_table(int n)
 
 int mps_len(int* chords, int n, int** mps_table, int i, int j)
 {
+    if(i>=j)
+        return 0;
     if(mps_table[i][j] != -1)
         return mps_table[i][j];
     
-    if(j==i)
-    {}
+    int k = chords[j];
 
-    for(int l=1; l<=2*n-1; l++)
+    //printf("[%d, %d]: ", i, j);
+
+    if(k == i)
     {
-        int i_max = 2*n-1-l;
-        for(int i=0; i<=i_max; i++)
-        {
-            int j = chords[i+l];
-            if(j == i)
-            {
-                mps_table[i][i+l] = mps_table[i+1][i+l-1] + 1;
-            }
-            else if(i+l>j && j>i)
-            {
-                mps_table[i][i+l] = Max(1 + mps_table[i][j-1] + mps_table[j+1][i+l-1], mps_table[i][i+l-1]);
-            }
-            else
-            {
-                mps_table[i][i+l] = mps_table[i][i+l-1];
-            }
-        }
+        //printf("find chord\n");
+        mps_table[i][j] = 1 + mps_len(chords, n, mps_table, i+1, j-1);
     }
-    return mps_table;
+    else if(j>k && k>i)
+    {
+        //printf("inner case\n");
+        mps_table[i][j] = Max(mps_len(chords, n, mps_table, i, j-1), 1+mps_len(chords, n, mps_table, i, k-1)+mps_len(chords, n, mps_table, k+1, j-1));
+    }
+    else
+    {
+        //printf("outer case\n");
+        mps_table[i][j] = mps_len(chords, n, mps_table, i, j-1);
+    }
+    return mps_table[i][j];
 }
 
 void print_mps_table(int** mps_table, int n)
 {
-    for(int i=0; i<n*2-1; i++)
+    printf("mps_table[i]: i+1\n");
+    for(int i=0; i<n*2; i++)
     {
         printf("mps_table[%d]: ", i);
         for(int j=i+1; j<n*2; j++)
