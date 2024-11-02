@@ -10,10 +10,10 @@ struct map_ele
 };
 
 int** init_mps_table(int n);
-int** fill_mps_table(int* chords, int n);
+int mps_len(int* chords, int n, int** mps_table, int i, int j);
 void print_mps_table(int** mps_table, int n);
-int* get_mps(int** mps_table, int n);
-void delete_mps_table(int** mps_table, int n);
+int* get_mps(int** mps_table, int n, int* chords, int i, int j);
+void delete_mps_table(int** mps_table, int* mps, int n);
 int Max(int a, int b);
 
 int** init_mps_table(int n)
@@ -80,34 +80,52 @@ void print_mps_table(int** mps_table, int n)
     }
 }
 
-int* get_mps(int** mps_table, int n)
+int* get_mps(int** mps_table, int n, int* chords, int i, int j)
 {
-    int* mps = new int[mps_table[0][n*2-1]];
-    int i = 0, j = n*2-1, k = 0;
-    while(i < j)
+    //printf("get_mps(%d, %d)\n", i, j);
+    static int size = mps_table[0][n*2-1], curr = 0;
+    static int *mps = new int [size];
+    if(i>=j)
+        return mps;
+    if(chords[i] == j)
     {
-        if(mps_table[i][j] == mps_table[i+1][j])
+        //printf("case1\n");
+        mps[curr++] = i;
+        get_mps(mps_table, n, chords, i+1, j-1);
+    }
+    else 
+    {
+        int k = chords[j];
+        if(k>i && k<j)
         {
-            i++;
-        }
-        else if(mps_table[i][j] == mps_table[i][j-1])
-        {
-            j--;
+            if(1+mps_table[i][k-1]+mps_table[k+1][j-1] > mps_table[i][j-1])
+            {
+                //printf("case2-1\n");
+                get_mps(mps_table, n, chords, i, k-1);
+                mps[curr++] = k;
+                get_mps(mps_table, n, chords, k+1, j);
+            }
+            else
+            {
+                //printf("case2-2\n");
+                get_mps(mps_table, n, chords, i, j-1);
+            }
         }
         else
         {
-            mps[k++] = i;
-            i++;
-            j--;
+            //printf("case3\n");
+            get_mps(mps_table, n, chords, i, j-1);
         }
     }
+
     return mps;
 }
 
-void delete_mps_table(int** mps_table, int n)
+void delete_mps_table(int** mps_table, int* mps, int n)
 {
     delete[] (mps_table[0]);
     delete[] mps_table;
+    delete[] mps;
 }
 
 int Max(int a, int b)

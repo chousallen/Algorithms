@@ -32,15 +32,18 @@ int main(int argc, char* argv[])
     int* chords = get_chords(ip_file, n);
     ip_file.close();
     int** mps_table = init_mps_table(n);
-    int mps = mps_len(chords, n, mps_table, 0, 2*n-1);
-    op_file << mps << endl;
-    for(int i=0; i<mps; i++)
-    {
-        op_file << 0 << " " << 0 << endl;
-    }
+    int mps_size = mps_len(chords, n, mps_table, 0, 2*n-1);
+    op_file << mps_size << endl;
     //print_mps_table(mps_table, n);
+    int* mps = get_mps(mps_table, n, chords, 0, 2*n-1);
+    printf("mps get\n");
+    for(int i=0; i<mps_size; i++)
+    {
+        op_file << mps[i] << " " << chords[mps[i]] << endl;
+    }
 
-    delete_mps_table(mps_table, n);
+
+    delete_mps_table(mps_table, mps, n);
     delete[] chords;
     op_file.close();
 
