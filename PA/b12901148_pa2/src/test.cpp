@@ -1,20 +1,18 @@
 #include <iostream>
+#include <cstring>
 using namespace std;
-
-struct ele
-{
-    int val;
-};
 
 int main()
 {
-    long n = 50000, sum = 0, size = (2*n+1) * n;
-    for(int k = 2*n; k>=2*n-24469; k--)
+    int size = 10;
+    int *ptr = new int[size];
+    memset(ptr, -1, size*sizeof(int));
+
+    for (int i = 0; i < size; i++)
     {
-        sum += k;
+        printf("%d, ", ptr[i]);
     }
-    printf("sum: %ld\n", sum);
-    printf("size: %ld\n", size);
+    
 
     return EXIT_SUCCESS;
 }

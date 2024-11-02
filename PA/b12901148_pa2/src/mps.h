@@ -1,6 +1,8 @@
 #ifndef _MPS_H_
 #define _MPS_H_
 
+#include <cstring>
+
 struct map_ele
 {
     int size;
@@ -18,6 +20,7 @@ int** init_mps_table(int n)
 {
     unsigned long size = (2*long(n)+1) * long(n);
     int* tmp_ptr = new int[size];
+    memset(tmp_ptr, -1, size*sizeof(int));
     
     int** mps_table = new int*[n*2];
     for(unsigned long i=0, addr=0, d=n*2-1; i<(unsigned long)(n)*2; i++)
@@ -26,26 +29,29 @@ int** init_mps_table(int n)
         addr += d;
         d-=1;
     }
-    return mps_table;
-}
-
-int** fill_mps_table(int* chords, int n)
-{
-    int** mps_table = init_mps_table(n);
-
     //base case
     for(int i=0; i<2*n; i++)
     {
         mps_table[i][i] = 0;
     }
+    return mps_table;
+}
+
+int mps_len(int* chords, int n, int** mps_table, int i, int j)
+{
+    if(mps_table[i][j] != -1)
+        return mps_table[i][j];
     
+    if(j==i)
+    {}
+
     for(int l=1; l<=2*n-1; l++)
     {
         int i_max = 2*n-1-l;
         for(int i=0; i<=i_max; i++)
         {
             int j = chords[i+l];
-            if(j == i)                                                                                                                 cccccccccccccccc  c nnnnnn   n nnnn
+            if(j == i)
             {
                 mps_table[i][i+l] = mps_table[i+1][i+l-1] + 1;
             }
