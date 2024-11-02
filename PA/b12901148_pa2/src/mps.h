@@ -20,7 +20,7 @@ int** init_mps_table(int n)
 {
     unsigned long size = (2*long(n)+1) * long(n);
     int* tmp_ptr = new int[size];
-    memset(tmp_ptr, -1, size*sizeof(int));
+    memset(tmp_ptr, 0, size*sizeof(int));
     
     int** mps_table = new int*[n*2];
     for(unsigned long i=0, addr=0, d=n*2-1; i<(unsigned long)(n)*2; i++)
@@ -41,7 +41,7 @@ int mps_len(int* chords, int n, int** mps_table, int i, int j)
 {
     if(i>=j)
         return 0;
-    if(mps_table[i][j] != -1)
+    if(mps_table[i][j] > 0)
         return mps_table[i][j];
     
     int k = chords[j];
