@@ -1,9 +1,0 @@
-# Project Instructions
-
-## Compilation
-
-To compile the program, navigate to the project directory and type:
-make
-
-To run the program, type
-./bin/mps [input file] [output file]
