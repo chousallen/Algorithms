@@ -1,0 +1,3 @@
+simply type make to build
+run the program by: 
+./bin/mps [input file dir] [output file directory]
