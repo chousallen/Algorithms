@@ -67,7 +67,7 @@ void DirectedGraph::addEdge(edge _edge)
 
 void DirectedGraph::sortEdges()
 {
-    sort(edges, edges+edge_size, [](const edge &a, const edge &b) -> bool
+    sort(edges.begin(), edges.end(), [](const edge &a, const edge &b) -> bool
     {
         return a.weight > b.weight;
     });
