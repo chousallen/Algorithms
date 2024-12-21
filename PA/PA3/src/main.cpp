@@ -65,13 +65,13 @@ vector<edge> read_directed_edges(ifstream &input_f)
 {
     vector<edge> edges;
     int weight = 0, tmp_int = 1;
-    vertex from, to;
+    uint16_t from_idx, to_idx;
     input_f >> v_size >> e_size;
 
     for(uint32_t i=0; i<e_size; i++)
     {
-        input_f >> from.id >> to.id >> weight;
-        edges.push_back({from, to, int8_t(weight)});
+        input_f >> from_idx >> to_idx >> weight;
+        edges.push_back({from_idx, to_idx, int8_t(weight)});
     }
     input_f >> tmp_int;
     if(tmp_int != 0)
@@ -132,7 +132,7 @@ void directed_main(DirectedGraph &mygraph, ofstream &output_f)
     output_f << total_cost << endl;
     for(auto &e: rm_edges)
     {
-        output_f << e.from.id << " " << e.to.id << " " << int(e.weight) << endl;
+        output_f << e.from_idx << " " << e.to_idx << " " << int(e.weight) << endl;
     }
     md_original_f.close();
     md_scc_f.close();

@@ -19,8 +19,8 @@ struct vertex
 
 struct edge
 {
-    vertex from;
-    vertex to;
+    uint16_t from_idx;
+    uint16_t to_idx;
     int8_t weight;
     bool used=false;
 };
