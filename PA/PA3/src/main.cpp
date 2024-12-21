@@ -79,6 +79,14 @@ vector<tuple<uint16_t, uint16_t, int8_t>> read_edges(ifstream &input_f)
     return edges;
 }
 
+void directed_main(DirectedGraph &mygraph, ofstream &output_f)
+{
+    mygraph.sortEdges();
+    DisjointSet ds(mygraph.getVertexSize());
+
+    uint32_t edge_idx=0, edge_size = mygraph.getEdgeSize();
+}
+
 void undirected_main(UndirectedGraph &mygraph, ofstream &output_f)
 {
     mygraph.sortEdges();

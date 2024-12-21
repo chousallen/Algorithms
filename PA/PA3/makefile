@@ -3,7 +3,7 @@ CXX = g++
 
 # Compiler flags
 CXXFLAGS_OPT = -O3
-CXXFLAGS_DBG = -O0 -g
+CXXFLAGS_DBG = -O0 -g -Wall
 
 # Source files
 SRCS = ./src/main.cpp ./src/directed_graph.cpp ./src/undirected_graph.cpp ./src/disjoint_set.cpp
