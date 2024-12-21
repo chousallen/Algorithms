@@ -1,7 +1,7 @@
 #include <iostream>
 #include <fstream>
-//#include <cstdint>
-//#include <vector>
+#include <cstdint>
+#include <vector>
 #include <tuple>
 
 #include "undirected_graph.h"
@@ -14,8 +14,7 @@ bool directed = false;
 uint16_t v_size = 0;
 uint32_t e_size = 0;
 
-vector<edge> read_directed_edges(ifstream &input_f);
-vector<tuple<uint16_t, uint16_t, int8_t>> read_undirected_edges(ifstream &input_f);
+vector<tuple<uint16_t, uint16_t, int8_t>> read_edges(ifstream &input_f);
 void directed_main(DirectedGraph &mygraph, ofstream &output_f);
 void undirected_main(UndirectedGraph &mygraph, ofstream &output_f);
 
@@ -29,6 +28,25 @@ int main(int argc, char* argv[])
     ifstream input_f(argv[1]);
     ofstream output_f(argv[2], ofstream::trunc);
     
+    vector<tuple<uint16_t, uint16_t, int8_t>> edges = read_edges(input_f);
+    if(directed)
+    {
+        //DirectedGraph mygraph(v_size, e_size, edges.data());
+        //mygraph.print();
+    }
+    else
+    {
+        UndirectedGraph mygraph(v_size, e_size, edges);
+        undirected_main(mygraph, output_f);
+    }
+
+    output_f.close();
+}
+
+
+vector<tuple<uint16_t, uint16_t, int8_t>> read_edges(ifstream &input_f)
+{
+    vector<tuple<uint16_t, uint16_t, int8_t>> edges;
     char tmp;
     input_f >> tmp;
     switch(tmp)
@@ -105,11 +123,6 @@ vector<tuple<uint16_t, uint16_t, int8_t>> read_undirected_edges(ifstream &input_
 
 void directed_main(DirectedGraph &mygraph, ofstream &output_f)
 {
-    ofstream md_original_f("./graphs/original.md", ofstream::trunc);
-    ofstream md_scc_f("./graphs/scc.md", ofstream::trunc);
-    ofstream md_greedy_f("./graphs/greedy.md", ofstream::trunc);
-    mygraph.printOriginal(md_original_f);
-    //mygraph.printVertices();
     mygraph.sortEdges();
     mygraph.DFS();
     mygraph.DFS_Transpose();
@@ -132,7 +145,7 @@ void directed_main(DirectedGraph &mygraph, ofstream &output_f)
     output_f << total_cost << endl;
     for(auto &e: rm_edges)
     {
-        output_f << e.from_idx << " " << e.to_idx << " " << int(e.weight) << endl;
+        output_f << e.from.id << " " << e.to.id << " " << int(e.weight) << endl;
     }
     md_original_f.close();
     md_scc_f.close();

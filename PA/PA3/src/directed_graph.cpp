@@ -3,14 +3,11 @@
 #include <cstring>
 #include <cstdio>
 #include <algorithm>
-#include <vector>
-#include <fstream>
 
 using namespace std;
 
 void DirectedGraph::DFS_Visit(uint16_t u, uint32_t &time)
 {
-    //printf("discover %d\n", u);
     vertices[u].discover = time++;
     for(int i=0; i<vertex_size; i++)
     {
@@ -19,19 +16,18 @@ void DirectedGraph::DFS_Visit(uint16_t u, uint32_t &time)
             DFS_Visit(i, time);
         }
     }
-    //printf("finish %d\n", u);
     vertices[u].finish = time++;
 }
 
-void DirectedGraph::DFS_setSCC(vertex &curr, const vertex &root)
+void DirectedGraph::DFS_setSCC(uint16_t parent, uint16_t root)
 {
     printf("set %d's scc %d\n", curr.id, root.id);
     vertices[curr.id].scc_root = root.id;
     for(int i=0; i<vertex_size; i++)
     {
-        if(wei_m[i][curr.id].weight != N_CONNECT && vertices[i].scc_root == UINT16_MAX)
+        if(wei_m[parent][i].weight != N_CONNECT && vertices[i].scc_root == UINT16_MAX)
         {
-            DFS_setSCC(vertices[i], root);
+            DFS_setSCC(i, root);
         }
     }
 }
@@ -39,38 +35,27 @@ void DirectedGraph::DFS_setSCC(vertex &curr, const vertex &root)
 DirectedGraph::DirectedGraph(uint16_t v_size): vertex_size(v_size), edge_size(0)
 {
     vertices.resize(v_size);
-    int i=0;
-    for (auto &v : vertices)
-    {
-        v.id = i++;
-    }
-    
     wei_m.resize(v_size);
     for(uint16_t i=0; i<v_size; i++)
     {
         wei_m[i].resize(v_size);
-        for(uint16_t j=0; j<v_size; j++)
+        for(int j=0; j<v_size; j++)
         {
-            wei_m[i][j] = {i, j, N_CONNECT};
+            wei_m[i][j] = {vertices[i], vertices[j], N_CONNECT};
         }
     }
 }
 
-DirectedGraph::DirectedGraph(uint16_t v_size, uint32_t edge_num, vector<edge> _edges): vertex_size(v_size), edge_size(0)
+DirectedGraph::DirectedGraph(uint16_t v_size, uint32_t edge_num, edge *_edges): vertex_size(v_size), edge_size(0)
 {
     vertices.resize(v_size);
-    int i=0;
-    for (auto &v : vertices)
-    {
-        v.id = i++;
-    }
     wei_m.resize(v_size);
     for(uint16_t i=0; i<v_size; i++)
     {
         wei_m[i].resize(v_size);
-        for(uint16_t j=0; j<v_size; j++)
+        for(int j=0; j<v_size; j++)
         {
-            wei_m[i][j] = {i, j, N_CONNECT};
+            wei_m[i][j] = {vertices[i], vertices[j], N_CONNECT};
         }
     }
 
@@ -145,9 +130,7 @@ void DirectedGraph::DFS_Transpose()
     {
         if(vertices[i].scc_root == UINT16_MAX)
         {
-            printf("find scc with root %d\n", vertices[i].id);
-            vertices[i].scc_root = vertices[i].id;
-            DFS_setSCC(vertices[i], vertices[i]);
+            DFS_setSCC(vertices[i].id, vertices[i].id);
         }
     }
     
@@ -209,12 +192,12 @@ uint16_t DirectedGraph::getVertexSize() const
     return vertex_size;
 }
 
-void DirectedGraph::printOriginal(ofstream &md_f) const
+void DirectedGraph::print() const
 {
     md_f << "```mermaid\nstateDiagram\n";
     for (const auto &e : edges)
     {
-        md_f << "    " << e.from_idx << " --> " << e.to_idx << " : " << static_cast<int>(e.weight) << "\n";
+        md_f << "    " << e.from.id << " --> " << e.to.id << " : " << static_cast<int>(e.weight) << "\n";
     }
     md_f << "```\n";
 }
@@ -226,7 +209,7 @@ void DirectedGraph::print(ofstream &md_f) const
     {
         if (e.used)
         {
-            md_f << "    " << e.from_idx << "/" << vertices[e.from_idx].scc_root << " --> " << e.to_idx << "/" << vertices[e.to_idx].scc_root << " : " << static_cast<int>(e.weight) << "\n";
+            md_f << "    " << e.from.id << "/" << e.from.scc_root << " --> " << e.to.id << "/" << e.to.scc_root << " : " << static_cast<int>(e.weight) << "\n";
         }
     }
     md_f << "```\n";
