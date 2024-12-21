@@ -1,7 +1,11 @@
-#ifndef _GRAPH_H_
-#define _GRAPH_H_
+#ifndef _DIRECTED_GRAPH_H_
+#define _DIRECTED_GRAPH_H_
 
 #include <cstdint>
+#include <vector>
+#include <fstream>
+
+using namespace std;
 
 #define N_CONNECT INT8_MAX
 
@@ -30,12 +34,12 @@ class DirectedGraph
         vector<edge> edges;
         vector<vector<edge>> wei_m;
         void DFS_Visit(uint16_t u, uint32_t &time);
-        void DFS_setSCC(uint16_t parent, uint16_t root);
+        void DFS_setSCC(vertex &curr, const vertex &root);
 
     public: 
         //Graph();
         DirectedGraph(uint16_t v_size);
-        DirectedGraph(uint16_t v_size, uint32_t edge_num, edge *_edges);
+        DirectedGraph(uint16_t v_size, uint32_t edge_num, vector<edge> _edges);
         ~DirectedGraph();
         //DirectedGraph &transpose();
         void addEdge(uint16_t from, uint16_t to, int8_t w = 1);
@@ -50,7 +54,10 @@ class DirectedGraph
         edge getEdge(uint32_t idx) const;
         uint32_t getEdgeSize() const;
         uint16_t getVertexSize() const;
-        void print() const;
+        void printOriginal(ofstream &md_f) const;
+        void print(ofstream &md_f) const;
+        void printVertices() const;
+        void printEdges() const;
 };
 
 
