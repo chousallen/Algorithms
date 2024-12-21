@@ -37,13 +37,16 @@ void DirectedGraph::DFS_Visit(v_idx_t v, vector<uint16_t> &discover_time, vector
 
 void DirectedGraph::DFS_Transpose(vector<v_idx_t> vertices_inorder)
 {
+    uint16_t cnt = 0;
     for(auto &s: vertices_inorder)
     {
         if (scc[s] == NIL)
         {
+            cnt++;
             setSCC(s, s);
         }
     }
+    printf("Found %d SCCs, %f vertices each in average\n", cnt, (double)num_vertices/cnt);
 }
 
 void DirectedGraph::setSCC(v_idx_t curr, v_idx_t scc_root)
@@ -134,13 +137,16 @@ void DirectedGraph::computeSCC()
 
 void DirectedGraph::useEdgesBetweenSCC()
 {
+    uint16_t cnt = 0;
     for (auto &e: edges)
     {
         if (scc[e->from] != scc[e->to])
         {
             e->used = true;
+            cnt++;
         }
     }
+    printf("Used %d edges between SCCs (%f%)\n", cnt, (double)cnt/num_edges*100);
 }
 
 void DirectedGraph::greedyUseEdges()
