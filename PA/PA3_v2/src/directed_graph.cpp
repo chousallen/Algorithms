@@ -146,7 +146,7 @@ void DirectedGraph::useEdgesBetweenSCC()
             cnt++;
         }
     }
-    printf("Used %d edges between SCCs (%f%)\n", cnt, (double)cnt/num_edges*100);
+    printf("Used %d edges between SCCs (%f percents)\n", cnt, (double)cnt/num_edges*100);
 }
 
 void DirectedGraph::greedyUseEdges()

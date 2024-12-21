@@ -37,6 +37,7 @@ int main(int argc, char* argv[])
             directed = false;
             break;
         case 'd':
+            //printf("directed\n");
             directed = true;
             break;
         default:
