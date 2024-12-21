@@ -1,9 +1,12 @@
-#include "graph.h"
+#include "directed_graph.h"
 #include <cstdint>
 #include <cstring>
 #include <cstdio>
+#include <algorithm>
 
-bool Graph::alloc_wei()
+using namespace std;
+
+bool DirectedGraph::alloc_wei()
 {
     if(vertex_size <= 0)
         return false;
@@ -17,12 +20,12 @@ bool Graph::alloc_wei()
     return true;
 }
 
-Graph::Graph(uint16_t v_size): vertex_size(v_size)
+DirectedGraph::DirectedGraph(uint16_t v_size): vertex_size(v_size), edge_size(0)
 {
     alloc_wei();
 }
 
-Graph::Graph(uint16_t v_size, uint32_t edge_num, edge *_edges)
+DirectedGraph::DirectedGraph(uint16_t v_size, uint32_t edge_num, edge *_edges): vertex_size(v_size), edge_size(edge_num)
 {
     alloc_wei();
     for(int i=0; i<edge_num; i++)
@@ -31,7 +34,7 @@ Graph::Graph(uint16_t v_size, uint32_t edge_num, edge *_edges)
     }
 }
 
-Graph::~Graph()
+DirectedGraph::~DirectedGraph()
 {
     if(wei_m != NULL)
     {
@@ -40,17 +43,42 @@ Graph::~Graph()
     }
 }
 
-void Graph::addEdge(uint16_t from, uint16_t to, int8_t w)
+DirectedGraph &DirectedGraph::transpose()
 {
-    wei_m[from][to] = w;
+    DirectedGraph ret = DirectedGraph(vertex_size);
+    for(int i=0; i<edge_size; i++)
+    {
+        ret.addEdge(edges[i].to, edges[i].from, edges[i].weight);
+    }
+    return ret;
 }
 
-void Graph::addEdge(edge _edge)
+void DirectedGraph::addEdge(uint16_t from, uint16_t to, int8_t w)
+{
+    wei_m[from][to] = w;
+    edges.push_back({from, to, w});
+    edge_size++;
+}
+
+void DirectedGraph::addEdge(edge _edge)
 {
     addEdge(_edge.from, _edge.to, _edge.weight);
 }
 
-void Graph::print() const
+void DirectedGraph::sortEdges()
+{
+    sort(edges, edges+edge_size, [](const edge &a, const edge &b) -> bool
+    {
+        return a.weight > b.weight;
+    });
+}
+
+edge DirectedGraph::getEdge(uint32_t idx) const
+{
+    return edges[idx];
+}
+
+void DirectedGraph::print() const
 {
     if(wei_m == NULL)
         return;
