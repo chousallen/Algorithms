@@ -74,9 +74,8 @@ if [ ! -d doc ]; then
 fi
 
 echo "checking report ..."
-report_exist=`ls doc | grep report.pdf`
-if [ "${report_exist}" = "" ]; then
-    echo "Connot find doc/report.pdf"
+if [ ! -f doc/report.pdf ]; then
+    echo "Cannot find doc/report.pdf"
     cd ../../
     rm -rf check_$$
     exit
