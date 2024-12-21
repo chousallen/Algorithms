@@ -1,0 +1,30 @@
+This is README file for Algorithm PA#3
+Author: <b11901100 EE2 王竣平>
+Date: 112.12.30
+=====
+DIRECTORY:
+
+bin/	  executable binary
+doc/	  reports
+src/ 	  source C++ codes
+utility/  checker
+
+======
+HOW TO COMPILE:
+
+    To compile the demo, simply follow the following steps
+    Under b11901100_pa3
+	make
+======
+HOW TO RUN:
+
+	./bin/cb <input_file_name> <output_file_name>
+
+	For example,
+	under b11901100_pa3
+	./bin/cb inputs/public_case_0.in outputs/public_case_0.out
+
+======
+
+OTHER NOTICE:
+  There were times that output file can't generate without output directory. But the submit checker asks me to remove the output directory.
