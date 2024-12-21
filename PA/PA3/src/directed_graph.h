@@ -1,57 +1,55 @@
-#ifndef _GRAPH_H_
-#define _GRAPH_H_
+#ifndef _DIRECTED_GRAPH_H_
+#define _DIRECTED_GRAPH_H_
 
 #include <cstdint>
 
-#define N_CONNECT INT8_MAX
+#include <vector>
 
-struct vertex
-{
-    uint16_t id=0;
-    uint32_t discover=UINT32_MAX;
-    uint32_t finish=UINT32_MAX;
-    uint16_t scc_root=UINT16_MAX;
-};
+using namespace std;
 
-struct edge
+typedef uint16_t v_idx_t;
+
+#define NC INT8_MAX
+#define NIL UINT16_MAX
+
+struct edge_t
 {
-    uint16_t from_idx;
-    uint16_t to_idx;
+    v_idx_t from;
+    v_idx_t to;
     int8_t weight;
-    bool used=false;
+    bool used;
 };
 
 class DirectedGraph
 {
-    private: 
-        uint16_t vertex_size;
-        uint32_t edge_size;
-        vector<vertex> vertices;
-        vector<edge> edges;
-        vector<vector<edge>> wei_m;
-        void DFS_Visit(uint16_t u, uint32_t &time);
-        void DFS_setSCC(uint16_t parent, uint16_t root);
+    private:
+        // Parameters
+        uint16_t num_vertices, num_edges, used_edges;
+        bool edge_sorted;
 
-    public: 
-        //Graph();
-        DirectedGraph(uint16_t v_size);
-        DirectedGraph(uint16_t v_size, uint32_t edge_num, edge *_edges);
-        ~DirectedGraph();
-        //DirectedGraph &transpose();
-        void addEdge(uint16_t from, uint16_t to, int8_t w = 1);
-        void addEdge(edge _edge);
+        // Arrays
+        vector<edge_t*> edges;
+        vector<v_idx_t> scc;
+        vector<vector<edge_t>> wei_m;
+
+        // Functions
+        vector<uint16_t> DFS() const;
+        void DFS_Visit(v_idx_t, vector<uint16_t> &discover_time, vector<uint16_t> &finish_time, uint16_t &time) const;
+        void DFS_Transpose(vector<v_idx_t> vertices_inorder);
+        void setSCC(v_idx_t curr, v_idx_t scc_root);
         void sortEdges();
-        void sortVertices();
-        void DFS();
-        void DFS_Transpose();
-        void useEdgeBetweenSCC();
-        void greedyUseEdge();
-        bool DFS_SCC_detectCycle(vertex source, vertex curr) const;
-        edge getEdge(uint32_t idx) const;
-        uint32_t getEdgeSize() const;
-        uint16_t getVertexSize() const;
-        void print() const;
+        bool checkCycleSCC(v_idx_t origin, v_idx_t curr) const;
+
+    public:
+        DirectedGraph(uint16_t num_v);
+        ~DirectedGraph();
+        void setEdges(vector<edge_t> edges);
+        void computeSCC();
+        void useEdgesBetweenSCC();
+        void useMSTEdges();
+        void greedyUseEdges();
+        const vector<edge_t*>& getEdges() const;
+        void printProgress(double p) const;
 };
 
-
-#endif //graph.h
+#endif // _DIRECTED_GRAPH_H_

@@ -1,179 +1,90 @@
-#include "directed_graph.h"
 #include <cstdint>
-#include <cstring>
 #include <cstdio>
+
+#include <vector>
 #include <algorithm>
 
 using namespace std;
 
-void DirectedGraph::DFS_Visit(uint16_t u, uint32_t &time)
+#include "directed_graph.h"
+#include "disjoint_set.h"
+
+vector<uint16_t> DirectedGraph::DFS() const
 {
-    vertices[u].discover = time++;
-    for(int i=0; i<vertex_size; i++)
+    vector<uint16_t> discover_time(num_vertices, NIL), finish_time(num_vertices, NIL);
+    uint16_t time = 0;
+    for (v_idx_t i = 0; i < num_vertices; i++)
     {
-        if(wei_m[u][i].weight != N_CONNECT && vertices[i].discover == UINT32_MAX)
+        if (discover_time[i] == NIL)
         {
-            DFS_Visit(i, time);
+            DFS_Visit(i, discover_time, finish_time, time);
         }
     }
-    vertices[u].finish = time++;
+    return finish_time;
 }
 
-void DirectedGraph::DFS_setSCC(uint16_t parent, uint16_t root)
+void DirectedGraph::DFS_Visit(v_idx_t v, vector<uint16_t> &discover_time, vector<uint16_t> &finish_time, uint16_t &time) const
 {
-    printf("set %d's scc %d\n", curr.id, root.id);
-    vertices[curr.id].scc_root = root.id;
-    for(int i=0; i<vertex_size; i++)
+    discover_time[v] = time++;
+    for (v_idx_t i = 0; i < num_vertices; i++)
     {
-        if(wei_m[parent][i].weight != N_CONNECT && vertices[i].scc_root == UINT16_MAX)
+        if (wei_m[v][i].weight != NC && discover_time[i] == NIL)
         {
-            DFS_setSCC(i, root);
+            DFS_Visit(i, discover_time, finish_time, time);
         }
     }
+    finish_time[v] = time++;
 }
 
-DirectedGraph::DirectedGraph(uint16_t v_size): vertex_size(v_size), edge_size(0)
+void DirectedGraph::DFS_Transpose(vector<v_idx_t> vertices_inorder)
 {
-    vertices.resize(v_size);
-    wei_m.resize(v_size);
-    for(uint16_t i=0; i<v_size; i++)
+    uint16_t cnt = 0;
+    for(auto &s: vertices_inorder)
     {
-        wei_m[i].resize(v_size);
-        for(int j=0; j<v_size; j++)
+        if (scc[s] == NIL)
         {
-            wei_m[i][j] = {vertices[i], vertices[j], N_CONNECT};
+            cnt++;
+            setSCC(s, s);
         }
     }
+    printf("Found %d SCCs, %.2f vertices each in average\n", cnt, (double)num_vertices/cnt);
 }
 
-DirectedGraph::DirectedGraph(uint16_t v_size, uint32_t edge_num, edge *_edges): vertex_size(v_size), edge_size(0)
+void DirectedGraph::setSCC(v_idx_t curr, v_idx_t scc_root)
 {
-    vertices.resize(v_size);
-    wei_m.resize(v_size);
-    for(uint16_t i=0; i<v_size; i++)
+    scc[curr] = scc_root;
+    for (v_idx_t i = 0; i < num_vertices; i++)
     {
-        wei_m[i].resize(v_size);
-        for(int j=0; j<v_size; j++)
+        if (wei_m[i][curr].weight != NC && scc[i] == NIL)
         {
-            wei_m[i][j] = {vertices[i], vertices[j], N_CONNECT};
+            setSCC(i, scc_root);
         }
     }
-
-    for(int i=0; i<edge_num; i++)
-    {
-        addEdge(_edges[i]);
-    }
-}
-
-DirectedGraph::~DirectedGraph()
-{
-}
-
-/*
-DirectedGraph &DirectedGraph::transpose()
-{
-    DirectedGraph ret = DirectedGraph(vertex_size);
-    for(int i=0; i<edge_size; i++)
-    {
-        ret.addEdge(edges[i].to, edges[i].from, edges[i].weight);
-    }
-    return ret;
-}
-*/
-
-void DirectedGraph::addEdge(uint16_t from, uint16_t to, int8_t w)
-{
-    wei_m[from][to].weight = w;
-    edges.push_back({from, to, w});
-    edge_size++;
-}
-
-void DirectedGraph::addEdge(edge _edge)
-{
-    edges.push_back(_edge);
-    wei_m[_edge.from_idx][_edge.to_idx] = _edge;
-    edge_size++;
 }
 
 void DirectedGraph::sortEdges()
 {
-    sort(edges.begin(), edges.end(), [](const edge &a, const edge &b) -> bool
+    if(edge_sorted)
     {
-        return a.weight > b.weight;
+        return;
+    }
+    sort(edges.begin(), edges.end(), [](edge_t* a, edge_t* b) -> bool
+    {
+        return a->weight > b->weight;
     });
 }
 
-void DirectedGraph::sortVertices()
+bool DirectedGraph::checkCycleSCC(v_idx_t origin, v_idx_t curr) const
 {
-    sort(vertices.begin(), vertices.end(), [](const vertex &a, const vertex &b) -> bool
-    {
-        return a.finish > b.finish;
-    });
-}
-
-void DirectedGraph::DFS()
-{
-    uint32_t time = 0;
-    for(int i=0; i<vertex_size; i++)
-    {
-        if(vertices[i].discover == UINT32_MAX)
-        {
-            DFS_Visit(i, time);
-        }
-    }
-}
-
-void DirectedGraph::DFS_Transpose()
-{
-    sortVertices();
-    for (int i = 0; i < vertex_size; i++)
-    {
-        if(vertices[i].scc_root == UINT16_MAX)
-        {
-            DFS_setSCC(vertices[i].id, vertices[i].id);
-        }
-    }
-    
-}
-
-void DirectedGraph::useEdgeBetweenSCC()
-{
-    for(int i=0; i<edge_size; i++)
-    {
-        if(vertices[edges[i].from_idx].scc_root != vertices[edges[i].to_idx].scc_root)
-        {
-            edges[i].used = true;
-        }
-    }
-}
-
-void DirectedGraph::greedyUseEdge()
-{
-    for(int i=0; i<edge_size; i++)
-    {
-        if(!DFS_SCC_detectCycle(vertices[edges[i].from_idx], vertices[edges[i].to_idx]))
-        {
-            edges[i].used = true;
-        }
-    }
-}
-
-edge DirectedGraph::getEdge(uint32_t idx) const
-{
-    return edges[idx];
-}
-
-bool DirectedGraph::DFS_SCC_detectCycle(vertex source, vertex curr) const
-{
-    if(wei_m[curr.id][source.id].weight != N_CONNECT)
+    if(curr == origin)
     {
         return true;
     }
-    for(int i=0; i<vertex_size; i++)
+    for (v_idx_t i = 0; i < num_vertices; i++)
     {
-        if(wei_m[curr.id][i].used && wei_m[curr.id][i].weight != N_CONNECT && vertices[i].scc_root == curr.scc_root)
+        if (wei_m[curr][i].weight != NC && wei_m[curr][i].used && scc[i] == scc[origin])
         {
-            if(DFS_SCC_detectCycle(source, vertices[wei_m[curr.id][i].to_idx]))
+            if (checkCycleSCC(origin, i))
             {
                 return true;
             }
@@ -182,55 +93,117 @@ bool DirectedGraph::DFS_SCC_detectCycle(vertex source, vertex curr) const
     return false;
 }
 
-uint32_t DirectedGraph::getEdgeSize() const
+DirectedGraph::DirectedGraph(uint16_t num_v): num_vertices(num_v), num_edges(0), used_edges(0), edge_sorted(false)
 {
-    return edge_size;
-}
-
-uint16_t DirectedGraph::getVertexSize() const
-{
-    return vertex_size;
-}
-
-void DirectedGraph::print() const
-{
-    md_f << "```mermaid\nstateDiagram\n";
-    for (const auto &e : edges)
+    scc.resize(num_v, NIL);
+    wei_m.resize(num_v);
+    for (v_idx_t i = 0; i < num_v; i++)
     {
-        md_f << "    " << e.from.id << " --> " << e.to.id << " : " << static_cast<int>(e.weight) << "\n";
-    }
-    md_f << "```\n";
-}
-
-void DirectedGraph::print(ofstream &md_f) const
-{
-    md_f << "```mermaid\nstateDiagram\n";
-    for (const auto &e : edges)
-    {
-        if (e.used)
+        wei_m[i].resize(num_v);
+        for (v_idx_t j = 0; j < num_v; j++)
         {
-            md_f << "    " << e.from.id << "/" << e.from.scc_root << " --> " << e.to.id << "/" << e.to.scc_root << " : " << static_cast<int>(e.weight) << "\n";
+            wei_m[i][j] = {i, j, NC, false};
+        }
+        
+    }    
+}
+
+DirectedGraph::~DirectedGraph()
+{
+    // Nothing to do
+}
+
+void DirectedGraph::setEdges(vector<edge_t> _edges)
+{
+    num_edges = _edges.size();
+    edges.reserve(num_edges);
+    for (auto &e: _edges)
+    {
+        wei_m[e.from][e.to].weight = e.weight;
+        edges.emplace_back(&(wei_m[e.from][e.to]));
+    }
+}
+
+void DirectedGraph::computeSCC()
+{
+    vector<uint16_t> finish_time = DFS();
+    vector<v_idx_t> vertices_inorder(num_vertices);
+    v_idx_t idx = 0;
+    for (auto &v: vertices_inorder)
+    {
+        v = idx++;
+    }
+    sort(vertices_inorder.begin(), vertices_inorder.end(), [&finish_time](v_idx_t a, v_idx_t b) -> bool
+    {
+        return finish_time[a] > finish_time[b];
+    });
+    DFS_Transpose(vertices_inorder);
+}
+
+void DirectedGraph::useEdgesBetweenSCC()
+{
+    uint16_t cnt = 0;
+    for (auto &e: edges)
+    {
+        if (scc[e->from] != scc[e->to])
+        {
+            e->used = true;
+            cnt++;
         }
     }
-    md_f << "```\n";
+    used_edges = cnt;
+    printProgress((double)used_edges/num_edges*100);;
+    //printf("Used %d edges between SCCs (%.2f percents)\n", cnt, (double)cnt/num_edges*100);
 }
 
-void DirectedGraph::printVertices() const
+void DirectedGraph::useMSTEdges()
 {
-    for (const auto &v : vertices)
+    sortEdges();
+    DisjointSet ds(num_vertices);
+    uint16_t cnt = 0;
+    for (auto &e: edges)
     {
-        printf("id: %d, scc_root: %d\n", v.id, v.scc_root);
+        if (ds.find(e->from) != ds.find(e->to))
+        {
+            e->used = true;
+            ds.union_set(e->from, e->to);
+            cnt++;
+        }
+    }
+    used_edges += cnt;
+    printProgress((double)used_edges/num_edges*100);
+    //printf("Used %d edges in MST (%.2f percents)\n", cnt, (double)cnt/num_edges*100);
+}
+
+void DirectedGraph::greedyUseEdges()
+{
+    sortEdges();
+    uint16_t cnt = 0;
+    for (auto &e: edges)
+    {
+        ++cnt;
+        if (!e->used)
+        {
+            if (!checkCycleSCC(e->from, e->to))
+            {
+                used_edges++;
+                e->used = true;
+                printProgress((double)cnt/num_edges*100);
+            }
+        }
     }
 }
 
-void DirectedGraph::printEdges() const
+const vector<edge_t*>& DirectedGraph::getEdges() const
 {
-    for(auto &i: wei_m)
+    return edges;
+}
+
+void DirectedGraph::printProgress(double percentage) const
+{
+    printf("\rProgress: %.2f%%", percentage);
+    if(percentage == 100)
     {
-        for(auto &j: i)
-        {
-            printf("%d \t", int(j.weight));
-        }
         printf("\n");
     }
 }
