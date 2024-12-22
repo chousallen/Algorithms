@@ -15,3 +15,8 @@ for input_file in ./inputs/*.in; do
     ./bin/cb "$input_file" "$output_file"
     ./checker/pa3_checker "$input_file" "$output_file"
 done
+
+# Run the judge command with seeds from 1126 to 1140
+for seed in {1126..1140}; do
+    ./judge -s "$seed"
+done
