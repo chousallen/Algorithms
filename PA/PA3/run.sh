@@ -17,6 +17,6 @@ for input_file in ./inputs/*.in; do
 done
 
 # Run the judge command with seeds from 1126 to 1140
-for seed in {1126..1140}; do
+for seed in {60000..60010}; do
     ./judge -s "$seed"
 done

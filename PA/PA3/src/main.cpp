@@ -109,7 +109,7 @@ void directed_main(DirectedGraph &mygraph, ofstream &output_f)
     mygraph.computeSCC();
     mygraph.useEdgesBetweenSCC();
     //if(v_size / mygraph.getNumSCC() >= 10000)
-        mygraph.useMSTEdges();
+    //mygraph.useMSTEdges();
     mygraph.greedyUseEdges();
     const vector<edge_t*> edges = mygraph.getEdges();
     vector<edge_t> rm_edges;
