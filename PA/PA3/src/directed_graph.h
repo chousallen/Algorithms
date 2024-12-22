@@ -31,6 +31,7 @@ class DirectedGraph
         vector<edge_t*> edges;
         vector<v_idx_t> scc;
         vector<vector<edge_t>> wei_m;
+        vector<bool> visited;
 
         // Functions
         vector<uint16_t> DFS() const;
@@ -38,7 +39,7 @@ class DirectedGraph
         void DFS_Transpose(vector<v_idx_t> vertices_inorder);
         void setSCC(v_idx_t curr, v_idx_t scc_root);
         void sortEdges();
-        bool checkCycleSCC(v_idx_t origin, v_idx_t curr) const;
+        bool checkCycleSCC(v_idx_t origin, v_idx_t curr) ;
 
     public:
         DirectedGraph(uint16_t num_v);

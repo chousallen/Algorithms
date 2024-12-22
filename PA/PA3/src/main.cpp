@@ -58,7 +58,6 @@ int main(int argc, char* argv[])
         UndirectedGraph mygraph(v_size, e_size, edges);
         undirected_main(mygraph, output_f);
     }
-    output_f << 0 << endl;
     output_f.close();
 }
 

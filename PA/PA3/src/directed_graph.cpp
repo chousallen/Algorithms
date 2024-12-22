@@ -1,5 +1,6 @@
 #include <cstdint>
 #include <cstdio>
+#include <cstring>
 
 #include <vector>
 #include <algorithm>
@@ -47,7 +48,7 @@ void DirectedGraph::DFS_Transpose(vector<v_idx_t> vertices_inorder)
             setSCC(s, s);
         }
     }
-    printf("Found %d SCCs, %.2f vertices each in average\n", cnt, (double)num_vertices/cnt);
+    //printf("Found %d SCCs, %.2f vertices each in average\n", cnt, (double)num_vertices/cnt);
 }
 
 void DirectedGraph::setSCC(v_idx_t curr, v_idx_t scc_root)
@@ -74,12 +75,17 @@ void DirectedGraph::sortEdges()
     });
 }
 
-bool DirectedGraph::checkCycleSCC(v_idx_t origin, v_idx_t curr) const
+bool DirectedGraph::checkCycleSCC(v_idx_t origin, v_idx_t curr) 
 {
     if(curr == origin)
     {
         return true;
     }
+    if(visited[curr])
+    {
+        return false;
+    }
+    visited[curr] = true;
     for (v_idx_t i = 0; i < num_vertices; i++)
     {
         if (wei_m[curr][i].weight != NC && wei_m[curr][i].used && scc[i] == scc[origin])
@@ -177,6 +183,7 @@ void DirectedGraph::useMSTEdges()
 
 void DirectedGraph::greedyUseEdges()
 {
+    visited.resize(num_vertices, false);
     sortEdges();
     uint16_t cnt = 0;
     for (auto &e: edges)
@@ -184,6 +191,7 @@ void DirectedGraph::greedyUseEdges()
         ++cnt;
         if (!e->used)
         {
+            visited.assign(num_vertices, false);
             if (!checkCycleSCC(e->from, e->to))
             {
                 used_edges++;
@@ -201,9 +209,9 @@ const vector<edge_t*>& DirectedGraph::getEdges() const
 
 void DirectedGraph::printProgress(double percentage) const
 {
-    printf("\rProgress: %.2f%%", percentage);
+    //printf("\rProgress: %.2f%%", percentage);
     if(percentage == 100)
     {
-        printf("\n");
+        //printf("\n");
     }
 }
