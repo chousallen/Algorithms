@@ -9,7 +9,7 @@ CXXFLAGS_DBG = -O0 -g -Wall
 SRCS = ./src/main.cpp ./src/directed_graph.cpp ./src/undirected_graph.cpp ./src/disjoint_set.cpp
 
 # Object files
-OBJS = $(SRCS:.cpp=.o)
+OBJS = $(SRCS:./src/%.cpp=./bin/%.o)
 
 # Executable name
 EXEC = ./bin/cb
@@ -30,7 +30,7 @@ $(EXEC): $(OBJS)
 	$(CXX) $(CXXFLAGS) -o $@ $^
 
 # Compile source files to object files
-%.o: %.cpp
+./bin/%.o: ./src/%.cpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 # Clean up
