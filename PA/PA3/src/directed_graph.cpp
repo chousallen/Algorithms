@@ -48,6 +48,7 @@ void DirectedGraph::DFS_Transpose(vector<v_idx_t> vertices_inorder)
             setSCC(s, s);
         }
     }
+    num_scc = cnt;
     //printf("Found %d SCCs, %.2f vertices each in average\n", cnt, (double)num_vertices/cnt);
 }
 
@@ -214,4 +215,9 @@ void DirectedGraph::printProgress(double percentage) const
     {
         //printf("\n");
     }
+}
+
+uint16_t DirectedGraph::getNumSCC() const
+{
+    return num_scc;
 }

@@ -24,7 +24,7 @@ class DirectedGraph
 {
     private:
         // Parameters
-        uint16_t num_vertices, num_edges, used_edges;
+        uint16_t num_vertices, num_edges, used_edges, num_scc;
         bool edge_sorted;
 
         // Arrays
@@ -51,6 +51,7 @@ class DirectedGraph
         void greedyUseEdges();
         const vector<edge_t*>& getEdges() const;
         void printProgress(double p) const;
+        uint16_t getNumSCC() const;
 };
 
 #endif // _DIRECTED_GRAPH_H_
