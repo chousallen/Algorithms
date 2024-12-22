@@ -1,0 +1,3 @@
+This is a program of greedily finding the cost of cycle breaking.
+Use make to compile.
+Run by typing "./bin/cb ./inputs/<your input file name> ./outputs/<expected output file name>"
